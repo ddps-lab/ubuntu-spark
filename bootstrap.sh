@@ -13,11 +13,19 @@ service ssh start
 #echo spark.yarn.jars hdfs:///spark/*.jar > $SPARK_HOME/conf/spark-defaults.conf
 cp $SPARK_HOME/conf/metrics.properties.template $SPARK_HOME/conf/metrics.properties
 
+# Create a user in the start up if NEW_USER environment variable is given
+# EX: docker run  -e NEW_USER=kmucs ...
+if [ -z != $NEW_USER ]
+then
+    adduser --disabled-password --gecos ""  "$NEW_USER" > /dev/null
+    usermod -aG sudo "$NEW_USER" > /dev/null
+fi
+
 CMD=${1:-"exit 0"}
 if [[ "$CMD" == "-d" ]];
 then
     service sshd stop
-	/usr/sbin/sshd -D -d
+    /usr/sbin/sshd -D -d
 else
     /bin/bash -c "$*"
 fi
