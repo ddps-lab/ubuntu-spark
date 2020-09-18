@@ -11,11 +11,21 @@ RUN apt-get install -y scala
 RUN apt-get install -y python
 RUN apt-get install -y python3
 
-# spark 2.4.0 without Hadoop
-RUN wget https://archive.apache.org/dist/spark/spark-2.4.0/spark-2.4.0-bin-without-hadoop.tgz
-RUN tar -xvzf spark-2.4.0-bin-without-hadoop.tgz -C /usr/local
-RUN cd /usr/local && ln -s ./spark-2.4.0-bin-without-hadoop spark
-RUN rm -f /spark-2.4.0-bin-without-hadoop.tgz
+# spark 3.0.1 without Hadoop
+RUN wget https://archive.apache.org/dist/spark/spark-3.0.1/spark-3.0.1-bin-without-hadoop.tgz
+RUN tar -xvzf spark-3.0.1-bin-without-hadoop.tgz -C /usr/local
+RUN cd /usr/local && ln -s ./spark-3.0.1-bin-without-hadoop spark
+RUN rm -f /spark-3.0.1-bin-without-hadoop.tgz
+
+# Files for S3A
+RUN mkdir /usr/local/spark/extrajars
+RUN wget -P /usr/local/spark/extrajars https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.11.860/aws-java-sdk-1.11.860.jar
+RUN wget -P /usr/local/spark/extrajars https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.11.860/aws-java-sdk-s3-1.11.860.jar
+RUN wget -P /usr/local/spark/extrajars https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.11.860/aws-java-sdk-core-1.11.860.jar
+RUN wget -P /usr/local/spark/extrajars https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-dynamodb/1.11.860/aws-java-sdk-dynamodb-1.11.860.jar
+RUN wget -P /usr/local/spark/extrajars https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.1.1/hadoop-aws-3.1.1.jar
+RUN wget -P /usr/local/spark/extrajars https://repo1.maven.org/maven2/joda-time/joda-time/2.10.6/joda-time-2.10.6.jar
+RUN wget -P /usr/local/spark/extrajars https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.9/httpclient-4.5.9.jar
 
 # ENV hadoop
 ENV HADOOP_COMMON_HOME /usr/local/hadoop
